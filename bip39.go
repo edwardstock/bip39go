@@ -7,7 +7,7 @@ package bip39go
 // #cgo CFLAGS: -std=c11
 // #cgo LDFLAGS: -lbip39_go -ltrezor_crypto -lstdc++
 // #include <bip39.h>
-// #include <hdkey_encoder.h>
+// #include <hdkey_encoder.H>
 //
 import "C"
 import (
