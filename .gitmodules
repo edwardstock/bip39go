@@ -1,0 +1,3 @@
+[submodule "internal/libbip39"]
+	path = internal/libbip39
+	url = https://github.com/edwardstock/native-bip39.git
