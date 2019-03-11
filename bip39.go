@@ -2,7 +2,9 @@ package bip39go
 
 // #cgo darwin amd64 LDFLAGS: -L${SRCDIR}/libs/darwin_amd64/lib
 // #cgo linux amd64 LDFLAGS: -L${SRCDIR}/libs/linux_amd64/lib
-// #cgo CFLAGS: -std=c11 -I${SRCDIR}/internal/libbip39/src/golang
+// #cgo darwin amd64 CFLAGS: -I${SRCDIR}/libs/darwin_amd64/include
+// #cgo linux amd64 CFLAGS: -I${SRCDIR}/libs/linux_amd64/include
+// #cgo CFLAGS: -std=c11
 // #cgo LDFLAGS: -lbip39_go -ltrezor_crypto -lstdc++
 // #include <bip39.h>
 // #include <hdkey_encoder.h>
@@ -235,7 +237,8 @@ func GenerateMnemonicFromBytes(bytes []uint8, language string, entropy Entropy) 
 func WordsToSeed(words string, data64 *MinterData64, numWritten *int) {
 	inArr := NewCByteArray(64)
 
-	var written = 0
+	//noinspection ALL
+	var written C.size_t = 0
 	C.minter_words_to_seed(C.CString(words), inArr, &written)
 	*numWritten = int(written)
 
