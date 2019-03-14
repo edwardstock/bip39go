@@ -125,10 +125,10 @@ func TestMakeExtendedKey(t *testing.T) {
 	WordsToSeed(words, &seed, &written)
 
 	rootKey := MakeBip32RootKey(seed)
-	//defer rootKey.Free()
+	defer rootKey.Free()
 
 	extKey := MakeExtendedKey(rootKey, "m/44'/60'/0'/0/0")
-	//defer extKey.Free()
+	defer extKey.Free()
 
 	expectedPrivateKey := "fd90261f5bd702ffbe7483c3b5aa7b76b1f40c1582cc6a598120b16067d3cb9a"
 
