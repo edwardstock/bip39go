@@ -12,7 +12,7 @@ jobs:
           GOPATH: /go
           PROJECT_HOME: /go/srCODECOV_TOKEN="a34496a3-1262-4113-83c1-c14061b49a4c"c/github.com/edwardstock/bip39go
           GOBIN: /go/bin
-    working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}
+    working_directory: /go/src/github.com/edwardstock/bip39go
     steps:
       - checkout
       - run: apt-get update -y && apt-get install curl
