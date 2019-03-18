@@ -9,6 +9,6 @@ const (
 	French              = "fr"
 	Italian             = "it"
 	Japanese            = "jp"
-	ChineseZHS          = "zhs"
-	ChineseZHT          = "zht"
+	ChineseZHS          = "zhs" // simplified
+	ChineseZHT          = "zht" // traditional
 )

@@ -6,6 +6,10 @@ import (
 	"fmt"
 )
 
+type ConfidentialData interface {
+	Free()
+}
+
 type HexConvertible interface {
 	// ToHexString - convert raw bytes to hex string
 	ToHexString() string
@@ -32,12 +36,20 @@ func (target *MinterData64) FromHexString(h string) error {
 	return fromHexWithSize(target.data[:], h, 64)
 }
 
+func (target *MinterData64) Free() {
+	memset(target.data[:], 0x00)
+}
+
 func (target *MinterData33) ToHexString() string {
 	return hex.EncodeToString(target.data[:])
 }
 
 func (target *MinterData33) FromHexString(h string) error {
 	return fromHexWithSize(target.data[:], h, 33)
+}
+
+func (target *MinterData33) Free() {
+	memset(target.data[:], 0x00)
 }
 
 func (target *MinterData32) ToHexString() string {
@@ -48,12 +60,20 @@ func (target *MinterData32) FromHexString(h string) error {
 	return fromHexWithSize(target.data[:], h, 32)
 }
 
+func (target *MinterData32) Free() {
+	memset(target.data[:], 0x00)
+}
+
 func (target *MinterBip32Key) ToHexString() string {
 	return hex.EncodeToString(target.data[:])
 }
 
 func (target *MinterBip32Key) FromHexString(h string) error {
 	return fromHexWithSize(target.data[:], h, 112)
+}
+
+func (target *MinterBip32Key) Free() {
+	memset(target.data[:], 0x00)
 }
 
 func fromHexWithSize(target []uint8, h string, size int) error {

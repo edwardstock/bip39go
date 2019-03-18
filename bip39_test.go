@@ -39,6 +39,22 @@ func TestGenerateMnemonic(t *testing.T) {
 	fmt.Println(m.Status)
 }
 
+func TestGenerateMnemonicRandomInvalidEntropy(t *testing.T) {
+	_, err := GenerateMnemonicRandom(English, 8)
+
+	assert.True(t, err != nil)
+
+	fmt.Println(err.Error())
+}
+
+func TestGenerateMnemonicRandomInvalidLanguage(t *testing.T) {
+	_, err := GenerateMnemonicRandom("russian", Entropy128bits)
+
+	assert.True(t, err != nil)
+
+	fmt.Println(err.Error())
+}
+
 func TestGenerateMnemonicFromBytes(t *testing.T) {
 	entropy, err := hex.DecodeString("f0b9c942b9060af6a82d3ac340284d7e")
 	assert.Nil(t, err)

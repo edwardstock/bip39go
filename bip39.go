@@ -181,7 +181,14 @@ type MnemonicResult struct {
 }
 
 func (target *MnemonicResult) Free() {
-	C.minter_free_mnemonic(target.ptr)
+	if target == nil {
+		return
+	}
+
+	if target.ptr != nil {
+		C.minter_free_mnemonic(target.ptr)
+	}
+
 	memsetString(target.Words, "")
 	target.Length = 0
 	target.Status = Ok
@@ -190,13 +197,19 @@ func (target *MnemonicResult) Free() {
 
 // GenerateMnemonicRandom internally uses PCGRandom library
 // see http://www.pcg-random.org/
+// todo: more accurate api, unified error handling
 func GenerateMnemonicRandom(language string, entropy Entropy) (result *MnemonicResult, err error) {
+
+	if !ValidateLanguage(language) {
+		return nil, errors.New(fmt.Sprintf("invalid language: %s", language))
+	}
+
 	var res *C.minter_mnemonic_result = C.minter_generate_mnemonic(C.CString(language), C.size_t(entropy))
 	out := &MnemonicResult{ptr: res}
 
 	out.Status = MnemonicStatus(res.status)
 	if out.Status != Ok {
-		return nil, errors.New(fmt.Sprintf("Unable to generate mnemonic: %v", out.Status))
+		return nil, errors.New(fmt.Sprintf("unable to generate mnemonic: %s", out.Status.String()))
 	}
 
 	out.Length = int(res.len)
@@ -204,6 +217,18 @@ func GenerateMnemonicRandom(language string, entropy Entropy) (result *MnemonicR
 	out.Words = fromCStringArray(res.len, res.words)
 
 	return out, nil
+}
+
+func ValidateLanguage(lang string) bool {
+	langs := GetLanguages()
+
+	for _, item := range langs.Items {
+		if item == lang {
+			return true
+		}
+	}
+
+	return false
 }
 
 // GenerateMnemonicFromBytes uses bytes obtained by yourself to generate mnemonic.
