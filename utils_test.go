@@ -7,22 +7,22 @@ import (
 
 func TestMemset(t *testing.T) {
 	data := MinterData64{}
-	data.data[0] = 0xff
-	data.data[1] = 0xff - 1
-	data.data[2] = 0xff - 2
-	data.data[3] = 0xff - 3
+	data.Data[0] = 0xff
+	data.Data[1] = 0xff - 1
+	data.Data[2] = 0xff - 2
+	data.Data[3] = 0xff - 3
 
-	assert.Equal(t, data.data[0], uint8(0xff))
-	assert.Equal(t, data.data[1], uint8(0xff-1))
-	assert.Equal(t, data.data[2], uint8(0xff-2))
-	assert.Equal(t, data.data[3], uint8(0xff-3))
+	assert.Equal(t, data.Data[0], uint8(0xff))
+	assert.Equal(t, data.Data[1], uint8(0xff-1))
+	assert.Equal(t, data.Data[2], uint8(0xff-2))
+	assert.Equal(t, data.Data[3], uint8(0xff-3))
 
-	memset(data.data[:], 0x00)
+	memset(data.Data[:], 0x00)
 
-	assert.Equal(t, data.data[0], uint8(0x00))
-	assert.Equal(t, data.data[1], uint8(0x00))
-	assert.Equal(t, data.data[2], uint8(0x00))
-	assert.Equal(t, data.data[3], uint8(0x00))
+	assert.Equal(t, data.Data[0], uint8(0x00))
+	assert.Equal(t, data.Data[1], uint8(0x00))
+	assert.Equal(t, data.Data[2], uint8(0x00))
+	assert.Equal(t, data.Data[3], uint8(0x00))
 
 	another := make([]uint8, 0)
 	memset(another, 0x00)

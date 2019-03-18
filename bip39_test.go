@@ -91,7 +91,7 @@ func TestWordsToSeed(t *testing.T) {
 
 	hexed := seed.ToHexString()
 	assert.Equal(t, expectedSeedHex, hexed)
-	assert.Equal(t, len(seed.data), written)
+	assert.Equal(t, len(seed.Data), written)
 
 	fmt.Println("Expected hex: ", expectedSeedHex)
 	fmt.Println("Resulted hex: ", hexed)
@@ -128,10 +128,10 @@ func TestMakeBip32RootKey(t *testing.T) {
 	assert.Equal(t, uint8(0x0), rootKey.Depth)
 	assert.Equal(t, uint32(0), rootKey.Fingerprint)
 
-	assert.Equal(t, 32, len(rootKey.PrivateKey.data))
-	assert.NotEqual(t, uint8(0x0), rootKey.PrivateKey.data[0])
-	assert.NotEqual(t, uint8(0x0), rootKey.PublicKey.data[0])
-	assert.NotEqual(t, uint8(0x0), rootKey.PublicKey.data[32])
+	assert.Equal(t, 32, len(rootKey.PrivateKey.Data))
+	assert.NotEqual(t, uint8(0x0), rootKey.PrivateKey.Data[0])
+	assert.NotEqual(t, uint8(0x0), rootKey.PublicKey.Data[0])
+	assert.NotEqual(t, uint8(0x0), rootKey.PublicKey.Data[32])
 }
 
 func TestMakeExtendedKey(t *testing.T) {

@@ -35,7 +35,7 @@ func (target CStringArray) Length() int {
 	return int(target.size)
 }
 
-// HDKey contains all required private data
+// HDKey contains all required private Data
 type HDKey struct {
 	ptr           *C.minter_hdkey
 	PublicKey     MinterData33
@@ -48,14 +48,14 @@ type HDKey struct {
 	Fingerprint   uint32
 }
 
-// Free - completely frees all confidential data, including memory cleaning (set zeroes to arrays)
+// Free - completely frees all confidential Data, including memory cleaning (set zeroes to arrays)
 func (target *HDKey) Free() {
 	C.free_hdkey(target.ptr)
-	memset(target.PublicKey.data[:], 0x00)
-	memset(target.PrivateKey.data[:], 0x00)
-	memset(target.ChainCode.data[:], 0x00)
-	memset(target.ExtPrivateKey.data[:], 0x00)
-	memset(target.ExtPublicKey.data[:], 0x00)
+	memset(target.PublicKey.Data[:], 0x00)
+	memset(target.PrivateKey.Data[:], 0x00)
+	memset(target.ChainCode.Data[:], 0x00)
+	memset(target.ExtPrivateKey.Data[:], 0x00)
+	memset(target.ExtPublicKey.Data[:], 0x00)
 	target.Depth = 0x00
 	target.Index = 0
 	target.Fingerprint = 0
@@ -64,17 +64,17 @@ func (target *HDKey) Free() {
 func MakeBip32RootKey(seed MinterData64) *HDKey {
 	seedData := C.minter_data64{}
 
-	for idx, val := range seed.data {
+	for idx, val := range seed.Data {
 		seedData.data[idx] = C.uchar(val)
 	}
 
 	var res *C.minter_hdkey = C.encoder_make_bip32_root_key(&seedData)
 	out := &HDKey{ptr: res}
-	fromCArrayByte(res.public_key.data[:], out.PublicKey.data[:])
-	fromCArrayByte(res.private_key.data[:], out.PrivateKey.data[:])
-	fromCArrayByte(res.chain_code.data[:], out.ChainCode.data[:])
-	fromCArrayByte(res.ext_private_key.data[:], out.ExtPrivateKey.data[:])
-	fromCArrayByte(res.ext_public_key.data[:], out.ExtPublicKey.data[:])
+	fromCArrayByte(res.public_key.data[:], out.PublicKey.Data[:])
+	fromCArrayByte(res.private_key.data[:], out.PrivateKey.Data[:])
+	fromCArrayByte(res.chain_code.data[:], out.ChainCode.Data[:])
+	fromCArrayByte(res.ext_private_key.data[:], out.ExtPrivateKey.Data[:])
+	fromCArrayByte(res.ext_public_key.data[:], out.ExtPublicKey.Data[:])
 
 	out.Depth = uint8(res.index)
 	out.Index = uint32(res.index)
@@ -96,32 +96,32 @@ func MakeExtendedKey(key *HDKey, derivationPath string) *HDKey {
 	var extPrivKeyData C.minter_bip32_key
 
 	// pub key
-	for i := 0; i < len(key.PublicKey.data); i++ {
-		pubKeyData.data[i] = (C.uchar)(key.PublicKey.data[i])
+	for i := 0; i < len(key.PublicKey.Data); i++ {
+		pubKeyData.data[i] = (C.uchar)(key.PublicKey.Data[i])
 	}
 	out.public_key = pubKeyData
 
 	// priv key
-	for i := 0; i < len(key.PrivateKey.data); i++ {
-		privKeyData.data[i] = (C.uchar)(key.PrivateKey.data[i])
+	for i := 0; i < len(key.PrivateKey.Data); i++ {
+		privKeyData.data[i] = (C.uchar)(key.PrivateKey.Data[i])
 	}
 	out.private_key = privKeyData
 
 	// chain code
-	for i := 0; i < len(key.ChainCode.data); i++ {
-		chainCodeData.data[i] = (C.uchar)(key.ChainCode.data[i])
+	for i := 0; i < len(key.ChainCode.Data); i++ {
+		chainCodeData.data[i] = (C.uchar)(key.ChainCode.Data[i])
 	}
 	out.chain_code = chainCodeData
 
 	// ext pub key
-	for i := 0; i < len(key.ExtPublicKey.data); i++ {
-		extPubKeyData.data[i] = (C.uchar)(key.ExtPublicKey.data[i])
+	for i := 0; i < len(key.ExtPublicKey.Data); i++ {
+		extPubKeyData.data[i] = (C.uchar)(key.ExtPublicKey.Data[i])
 	}
 	out.ext_public_key = extPubKeyData
 
 	// ext priv key
-	for i := 0; i < len(key.ExtPrivateKey.data); i++ {
-		extPrivKeyData.data[i] = (C.uchar)(key.ExtPrivateKey.data[i])
+	for i := 0; i < len(key.ExtPrivateKey.Data); i++ {
+		extPrivKeyData.data[i] = (C.uchar)(key.ExtPrivateKey.Data[i])
 	}
 	out.ext_private_key = extPrivKeyData
 
@@ -132,11 +132,11 @@ func MakeExtendedKey(key *HDKey, derivationPath string) *HDKey {
 	var res *C.minter_hdkey = C.encoder_make_ext_key(&out, C.CString(derivationPath))
 
 	extOut := &HDKey{ptr: res}
-	fromCArrayByte(res.public_key.data[:], extOut.PublicKey.data[:])
-	fromCArrayByte(res.private_key.data[:], extOut.PrivateKey.data[:])
-	fromCArrayByte(res.chain_code.data[:], extOut.ChainCode.data[:])
-	fromCArrayByte(res.ext_private_key.data[:], extOut.ExtPrivateKey.data[:])
-	fromCArrayByte(res.ext_public_key.data[:], extOut.ExtPublicKey.data[:])
+	fromCArrayByte(res.public_key.data[:], extOut.PublicKey.Data[:])
+	fromCArrayByte(res.private_key.data[:], extOut.PrivateKey.Data[:])
+	fromCArrayByte(res.chain_code.data[:], extOut.ChainCode.Data[:])
+	fromCArrayByte(res.ext_private_key.data[:], extOut.ExtPrivateKey.Data[:])
+	fromCArrayByte(res.ext_public_key.data[:], extOut.ExtPublicKey.Data[:])
 
 	extOut.Depth = uint8(res.index)
 	extOut.Index = uint32(res.index)
@@ -267,7 +267,7 @@ func WordsToSeed(words string, data64 *MinterData64, numWritten *int) {
 	C.minter_words_to_seed(C.CString(words), inArr, &written)
 	*numWritten = int(written)
 
-	fromCPtrArray(inArr, data64.data[:])
+	fromCPtrArray(inArr, data64.Data[:])
 }
 
 // ValidateMnemonicWords checks passed words for correctness with internal table. Table contains exactly 2048 words

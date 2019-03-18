@@ -17,7 +17,7 @@ func TestMinterData64_ToHexString(t *testing.T) {
 	}
 
 	data := MinterData64{}
-	copy(data.data[:], randBytes[:])
+	copy(data.Data[:], randBytes[:])
 
 	src := data.ToHexString()
 
@@ -33,13 +33,13 @@ func TestMinterData64_ToHexString(t *testing.T) {
 	assert.Equal(t, randBytes[len(randBytes)-1], uint8(lastByte))
 
 	data.Free()
-	assert.Equal(t, data.data[0], uint8(0x00))
-	assert.Equal(t, data.data[len(data.data)-1], uint8(0x00))
+	assert.Equal(t, data.Data[0], uint8(0x00))
+	assert.Equal(t, data.Data[len(data.Data)-1], uint8(0x00))
 }
 
 func TestMinterData32_ToHexStringEmpty(t *testing.T) {
 	data := MinterData32{}
-	assert.Equal(t, 32, len(data.data))
+	assert.Equal(t, 32, len(data.Data))
 	hex := data.ToHexString()
 	assert.Equal(t, "0000000000000000000000000000000000000000000000000000000000000000", hex)
 
@@ -54,15 +54,15 @@ func TestMinterData64_FromHexString(t *testing.T) {
 
 	assert.Nil(t, err)
 
-	firstByteString := hex.EncodeToString(data.data[0:1])
+	firstByteString := hex.EncodeToString(data.Data[0:1])
 	assert.Equal(t, firstByteString, src[0:2])
 
-	lastByteString := hex.EncodeToString(data.data[len(data.data)-1:])
+	lastByteString := hex.EncodeToString(data.Data[len(data.Data)-1:])
 	assert.Equal(t, lastByteString, src[len(src)-2:])
 
 	data.Free()
-	assert.Equal(t, data.data[0], uint8(0x00))
-	assert.Equal(t, data.data[len(data.data)-1], uint8(0x00))
+	assert.Equal(t, data.Data[0], uint8(0x00))
+	assert.Equal(t, data.Data[len(data.Data)-1], uint8(0x00))
 }
 
 func TestMinterData64_FromHexStringInvalidLength(t *testing.T) {
